@@ -63,8 +63,7 @@ MainWindow::~MainWindow()
 void MainWindow::BtnPressed()
 {
     QPushButton* button = qobject_cast<QPushButton*>(sender());
-    if(button == nullptr)
-        throw std::runtime_error("button cast error");
+    assert(button != nullptr);
 
     auto ito = std::find_if(mnemonics.begin(), mnemonics.end(), [&button](const o_pair & xx){return button->objectName().toStdString() == xx.first;});
 
