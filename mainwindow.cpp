@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     co = new Calculate;
 
-
     mnemonics.reserve(20);
 
     auto objName = [](const QPushButton * b)->std::string{ return b->objectName().toStdString(); };
