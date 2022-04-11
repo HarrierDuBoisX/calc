@@ -13,6 +13,7 @@
 
 using namespace boost::safe_numerics;
 
+
 class Calculate
 {
 public:
@@ -52,17 +53,19 @@ private:
 
 
     std::string calculus(const operations & o);
+    std::string evalus(const operations & o);;
 
+    int parse();
 
 public:
     Calculate();
     ~Calculate();
 
-    std::string recive( enum operations o )
-    {
-        return calculus(o);
-    }
 
+    std::string recive( enum operations o, bool ev)
+    {
+        return (!ev)? calculus(o) : evalus(o);
+    }
 
 };
 

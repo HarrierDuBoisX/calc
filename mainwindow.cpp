@@ -49,8 +49,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     registr_button(ui->bclean_all, Calculate::operations::clear_all);
     registr_button(ui->b_backs, Calculate::operations::backspace);
-
-
 }
 
 MainWindow::~MainWindow()
@@ -66,8 +64,20 @@ void MainWindow::BtnPressed()
 
     auto ito = std::find_if(mnemonics.begin(), mnemonics.end(), [&button](const o_pair & xx){return button->objectName().toStdString() == xx.first;});
 
-    if(ito != mnemonics.end())
-        ui->lineEdit->setText(co->recive(ito->second).c_str());
+    if(ito == mnemonics.end())
+        throw std::runtime_error("Error");
+
+    bool ef = ui->beval->isFlat();
+
+
+    if (!ef && ito->second == Calculate::operations::eval)
+    {
+      ui->lineEdit->setText(co->recive(Calculate::operations::clear_all, ef).c_str());
+    }
+
+    if(ito->second == Calculate::operations::eval)
+        ui->beval->setFlat(!ef);
+    ui->lineEdit->setText(co->recive(ito->second, ef).c_str());
 
 }
 

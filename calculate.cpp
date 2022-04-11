@@ -1,4 +1,6 @@
 #include "calculate.h"
+#include "parse.h"
+
 
 std::string Calculate::calculus(const operations &o)
 {
@@ -73,9 +75,89 @@ std::string Calculate::calculus(const operations &o)
     return on_display;
 }
 
+std::string Calculate::evalus(const operations &o)
+{
+    switch(o)
+    {
+    case operations::zero:
+    case operations::one:
+    case operations::two:
+    case operations::three:
+    case operations::four:
+    case operations::five:
+    case operations::six:
+    case operations::seven:
+    case operations::eight:
+    case operations::nine:
+        on_display += std::to_string(static_cast<int>(o));
+        break;
+    case operations::eval:
+        on_display = std::to_string(parse());
+        break;
+    case operations::backspace:
+    {
+        size_t len = on_display.length();
+        on_display = on_display.substr(0, (len>0)?len-1:0);
+    }
+        return on_display;
+    case operations::clear_all:
+        on_display.clear();
+        break;
+    case operations::plus:
+        on_display += "+";
+        break;
+    case operations::minus:
+        on_display += "-";
+        break;
+    case operations::multiplication:
+        on_display += "*";
+        break;
+    case operations::division:
+        on_display += "/";
+        break;
+    case operations::left_bracket:
+        on_display += "(";
+        break;
+    case operations::right_bracket:
+        on_display += ")";
+        break;
+    case operations::res:
+
+        break;
+    }
+    return on_display;
+}
+
+int Calculate::parse()
+{
+    /*
+    auto& calc = grammar::def_parse;    // Our grammar
+    typedef std::string::const_iterator iterator_type;
+
+    iterator_type iter = on_display.begin();
+    iterator_type end = on_display.end();
+    boost::spirit::x3::ascii::space_type space;
+
+    int valu;
+    bool r = phrase_parse(iter, end, calc, space, valu);
+
+    if (r && iter == end)
+    {
+        //all ok parse
+    }
+*/
+    namespace x3 = boost::spirit::x3;
+
+    int32_t value{};
+    if (!phrase_parse(on_display.begin(), on_display.end(), grammar::expr >> x3::eoi,
+                    x3::space, value))
+        throw std::runtime_error("error in expression");
+    return value;
+}
+
 Calculate::Calculate()
-    :cur_num(0)
-    ,prev_num(0)
+    :prev_num(0)
+    ,cur_num(0)
 {
 
 }
